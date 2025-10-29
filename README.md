@@ -1,52 +1,29 @@
 # firebase-superservice
 
-A batteries-included Firebase monorepo with **Functions (TypeScript, Node 20)**, **Firestore rules**, **Storage rules**, **Auth trigger**, **HTTP API**, **Emulators**, **Vitest tests**, and CI-ready scripts.
+> 🔥 A batteries-included **Firebase backend boilerplate** featuring Functions (TypeScript), Firestore, Auth, Storage, Emulators, Vitest tests, and CI-ready configuration.
 
-## Features
-- Firebase Functions (Node 20, TypeScript)
-- Auth onCreate → user profile doc
-- HTTPS API endpoint with Zod validation
-- Firestore security rules + (empty) indexes
-- Storage rules (user-scoped uploads)
-- Local emulators (Functions, Firestore, Auth, Storage, UI)
-- Vitest unit tests
-- Opinionated ESLint + Prettier setup
+---
 
-## Quick start
-```bash
-pnpm i
-cp .env.example .env
-pnpm dev
-```
-This starts the Emulator UI at http://localhost:4000
+## 🧠 Overview
 
-### Deploy (replace with your project)
-```bash
-firebase use your-project-id
-cd functions && npm run build && cd ..
-firebase deploy
-```
+The **Firebase Superservice** project provides a robust starting point for building scalable Firebase backends using **TypeScript**, **Node 20**, and the **Firebase Emulator Suite**. It’s designed for developers who want clean, secure, and testable serverless applications without reinventing the wheel.
 
-## Functions
-- **Auth Trigger**: `onAuthCreate` → writes `users/{uid}` profile doc.
-- **HTTP API**: `api` → `POST /api/echo` with JSON `{ "message": "Hello" }`.
-- **Scheduled**: `heartbeat` → daily log (configure scheduler in prod).
+---
 
-## Security Rules
-- Firestore: `users/{uid}` owned by the authenticated user; `public/*` read-only; default deny.
-- Storage: `/user-uploads/{uid}/**` accessible by that user; default deny.
+## ⚙️ Features
 
-## Testing
-```bash
-pnpm test
-```
-> Extend with Functions unit tests (e.g., using `firebase-functions-test`) as needed.
+* 🚀 **Cloud Functions (TypeScript)** — includes Auth triggers, HTTPS endpoints, and scheduled jobs
+* 🔒 **Firestore Security Rules** — fine-grained access for user-owned data
+* 🪣 **Storage Rules** — scoped to authenticated users
+* 🧩 **Auth Integration** — onCreate trigger → profile document
+* 🧪 **Vitest** — fast and modern unit testing
+* ⚙️ **Firebase Emulators** — Functions, Firestore, Auth, Storage, and UI all ready for local dev
+* 🧼 **Prettier + ESLint** — clean, consistent codebase
 
-## CI
-- Use `firebase-tools` in CI (GitHub Actions/Cloud Build) to run `pnpm test` and, if desired, deploy.
-- For secure deploys, prefer OIDC or a GitHub deploy key over long-lived tokens.
+---
 
-## Structure
+## 🏗️ Project Structure
+
 ```
 firebase-superservice/
 ├─ functions/               # Cloud Functions (TS)
@@ -54,15 +31,120 @@ firebase-superservice/
 │  │  └─ index.ts
 │  ├─ tsconfig.json
 │  └─ package.json
-├─ tests/                   # vitest
-├─ firestore.rules          # Firestore security
-├─ storage.rules            # Storage security
-├─ firestore.indexes.json   # Firestore indexes
-├─ firebase.json            # Firebase config (emulators)
-├─ .firebaserc              # default project (demo-superservice)
-├─ .env.example
+├─ tests/                   # Vitest unit tests
+├─ firestore.rules           # Firestore security rules
+├─ storage.rules             # Storage security rules
+├─ firestore.indexes.json    # Firestore indexes
+├─ firebase.json             # Firebase config (emulators)
+├─ .firebaserc               # default project (demo-superservice)
+├─ .env.example              # local environment example
 └─ README.md
 ```
 
-## License
-MIT © 2025 Joey Caughey
+---
+
+## ⚡ Quick Start
+
+### 1️⃣ Install dependencies
+
+```bash
+pnpm install
+```
+
+### 2️⃣ Copy and configure environment
+
+```bash
+cp .env.example .env
+```
+
+### 3️⃣ Start local emulators
+
+```bash
+pnpm dev
+```
+
+Then visit the Emulator UI: **[http://localhost:4000](http://localhost:4000)**
+
+---
+
+## 🔧 Firebase Functions
+
+| Function       | Type           | Description                                                                          |
+| -------------- | -------------- | ------------------------------------------------------------------------------------ |
+| `onAuthCreate` | Auth trigger   | Creates a Firestore profile document for each new user                               |
+| `api`          | HTTPS endpoint | `POST /api/echo` with `{ "message": "Hello" }` returns `{ ok: true, echo: "Hello" }` |
+| `heartbeat`    | Scheduled      | Runs every 24 hours to log a status message                                          |
+
+---
+
+## 🔒 Security Rules
+
+**Firestore**
+
+* `users/{uid}` — full access for owner only
+* `public/*` — read-only for all
+* default — deny all
+
+**Storage**
+
+* `/user-uploads/{uid}/**` — read/write for owner only
+
+---
+
+## 🧪 Testing
+
+Run unit tests:
+
+```bash
+pnpm test
+```
+
+Extend with `firebase-functions-test` for deeper integration testing.
+
+---
+
+## 🚀 Deployment
+
+Deploy to Firebase:
+
+```bash
+firebase use <your-project-id>
+cd functions && npm run build && cd ..
+firebase deploy
+```
+
+You can add this to CI/CD pipelines (GitHub Actions or Cloud Build) using the `firebase-tools` CLI.
+
+---
+
+## 🧰 Developer Experience
+
+* TypeScript strict mode
+* Modern tooling (Vitest, ESLint, Prettier)
+* Easy to extend for real projects
+* Works with Firebase Hosting, Extensions, and Scheduler
+
+---
+
+## MIT License
+
+[MIT License](./LICENSE) Copyright (c) 2025 Joseph Caughey (https://www.josephcaughey.com
+)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
